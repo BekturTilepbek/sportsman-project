@@ -18,5 +18,5 @@ COPY . .
 # Открываем порт 8000
 EXPOSE 8000
 
-# Запускаем сервер (для локальной разработки фронтендером этого достаточно)
-CMD ["python", "manage.py", "runserver", "0.0.0.0:8000"]
+# Запускаем gunicorn для production
+CMD ["gunicorn", "source.wsgi:application", "--bind", "0.0.0.0:8000", "--workers", "3"]

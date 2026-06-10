@@ -1,7 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 import axios from "axios";
 
-const BASE_URL = "http://localhost:8000/api/v1/orders/";
+const BACKEND = process.env.BACKEND_URL || "http://backend:8000";
+const BASE_URL = `${BACKEND}/api/v1/orders/`;
 
 export async function POST(req: NextRequest) {
   try {

@@ -1,6 +1,8 @@
 import { NextRequest, NextResponse } from "next/server";
 import axios from "axios";
 
+const BACKEND = process.env.BACKEND_URL || "http://backend:8000";
+
 export async function GET(req: NextRequest) {
   try {
     // получаем query параметры
@@ -9,8 +11,8 @@ export async function GET(req: NextRequest) {
 
     // формируем URL к бэку
     const url = category
-      ? `http://localhost:8000/api/v1/products/?category=${category}`
-      : `http://localhost:8000/api/v1/products/`;
+      ? `${BACKEND}/api/v1/products/?category=${category}`
+      : `${BACKEND}/api/v1/products/`;
 
     const response = await axios.get(url);
 

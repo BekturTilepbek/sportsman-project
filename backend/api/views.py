@@ -51,7 +51,6 @@ class ProductViewSet(ListModelMixin, GenericViewSet):
         # Кастомная фильтрация по категории
         queryset = super().get_queryset()
         category_slug = self.request.query_params.get('category')
-        print(category_slug)
         if category_slug:
             queryset = queryset.filter(category__slug=category_slug)
         return queryset

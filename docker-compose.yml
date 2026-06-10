@@ -7,8 +7,6 @@ services:
       - .env
     volumes:
       - postgres_data:/var/lib/postgresql/data
-    ports:
-      - "5432:5432"
 
   backend:
     build: ./backend
@@ -17,11 +15,8 @@ services:
     env_file:
       - .env
     volumes:
-      - ./backend:/app
       - static_volume:/app/staticfiles
       - media_volume:/app/media
-    ports:
-      - "8000:8000"
     environment:
       - DATABASE_URL=True
       - POSTGRES_HOST=db
@@ -29,7 +24,7 @@ services:
       - db
     command: >
       sh -c "python manage.py collectstatic --noinput &&
-             python manage.py migrate && 
+             python manage.py migrate &&
              python manage.py createsuperuser --username admin --email admin@example.com --noinput || true &&
              gunicorn source.wsgi:application --bind 0.0.0.0:8000 --workers 3"
 
@@ -38,10 +33,9 @@ services:
       context: ./frontend
       dockerfile: Dockerfile
     container_name: nextjs_frontend
-    ports:
-      - "3000:3000"
-    environment:
-      - NEXT_PUBLIC_API_URL=http://localhost/api/v1
+    restart: always
+    env_file:
+      - .env
     depends_on:
       - backend
 
