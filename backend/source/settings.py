@@ -27,10 +27,13 @@ DEBUG = os.environ.get('DEBUG', 'True') == 'True'
 
 ALLOWED_HOSTS = os.environ.get('ALLOWED_HOSTS', '*').split(' ')
 
-# CSRF: для входа в админку при DEBUG=False (http://IP)
-CSRF_TRUSTED_ORIGINS = [
-    f'http://{h}' for h in ALLOWED_HOSTS if h not in ('*', '')
-]
+# CSRF: для входа в админку при DEBUG=False (домен по https и IP по http)
+CSRF_TRUSTED_ORIGINS = []
+for _h in ALLOWED_HOSTS:
+    if _h in ('*', ''):
+        continue
+    CSRF_TRUSTED_ORIGINS.append(f'https://{_h}')
+    CSRF_TRUSTED_ORIGINS.append(f'http://{_h}')
 
 
 # Application definition
