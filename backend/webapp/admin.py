@@ -8,11 +8,12 @@ class ProductAdmin(admin.ModelAdmin):
     list_display = ('image_tag', 'name', 'price', 'category', 'is_original')
     list_filter = ('category', 'is_original')
     search_fields = ('name', 'description')
+    list_per_page = 20  # меньше фото на страницу — быстрее грузится
 
     # Функция для вывода миниатюры картинки в списке товаров
     def image_tag(self, obj):
         if obj.image:
-            return format_html('<img src="{}" style="width: 50px; height:50px; object-fit:cover;" />',
+            return format_html('<img src="{}" loading="lazy" style="width: 50px; height:50px; object-fit:cover;" />',
                 obj.image.url)
         return "-"
     image_tag.short_description = 'Фото'
