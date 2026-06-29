@@ -10,6 +10,7 @@ For the full list of settings and their values, see
 https://docs.djangoproject.com/en/6.0/ref/settings/
 """
 import os
+from django.urls import reverse_lazy
 from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
@@ -39,6 +40,11 @@ for _h in ALLOWED_HOSTS:
 # Application definition
 
 INSTALLED_APPS = [
+    # Тема админки (должна идти ДО django.contrib.admin)
+    'unfold',
+    'unfold.contrib.filters',
+    'unfold.contrib.forms',
+
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
@@ -167,4 +173,43 @@ SPECTACULAR_SETTINGS = {
     'DESCRIPTION': 'API для интернет-магазина спортивного питания',
     'VERSION': '1.0.0',
     'SERVE_INCLUDE_SCHEMA': False,
+}
+
+# === Настройки админки (Unfold) ===
+UNFOLD = {
+    "SITE_TITLE": "Sportsman — админка",
+    "SITE_HEADER": "Sportsman",
+    "SITE_SUBHEADER": "Управление магазином",
+    "SHOW_HISTORY": True,
+    "SHOW_VIEW_ON_SITE": False,
+    "COLORS": {
+        "primary": {
+            "50": "239 246 255", "100": "219 234 254", "200": "191 219 254",
+            "300": "147 197 253", "400": "96 165 250", "500": "59 130 246",
+            "600": "37 99 235", "700": "29 78 216", "800": "30 64 175",
+            "900": "30 58 138", "950": "23 37 84",
+        },
+    },
+    "SIDEBAR": {
+        "show_search": True,
+        "show_all_applications": False,
+        "navigation": [
+            {
+                "title": "Каталог",
+                "items": [
+                    {"title": "Товары", "icon": "inventory_2",
+                     "link": reverse_lazy("admin:webapp_product_changelist")},
+                    {"title": "Категории", "icon": "category",
+                     "link": reverse_lazy("admin:webapp_category_changelist")},
+                ],
+            },
+            {
+                "title": "Продажи",
+                "items": [
+                    {"title": "Заказы", "icon": "shopping_cart",
+                     "link": reverse_lazy("admin:webapp_order_changelist")},
+                ],
+            },
+        ],
+    },
 }
